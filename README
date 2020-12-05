@@ -1,0 +1,84 @@
+This is the nimpy_WiPAL nimrod utility. It functions as a useful, higher-level interface with nimrod for python users.
+
+To install nimpy_WiPAL run:
+./setup.sh && source ~/.bash_profile
+
+After installing, all executables will be located in ~/bin.
+To learn more run any of them with --help flag.
+
+Directory Structure:
+/bin: houses .sh scripts for executables, after install softlinks to these will be in ~/bin
+/nimpy: main python module
+    nimh5.py: main python script for processing dump files into hdf5 format
+    nimdata.py: main python module for reading nimh5 files into custom scripts/shells
+    /tools: auxilary tools for nimh5 and nimdata
+
+Examples and Usage conventions:
+    
+1) using nimcd to get around:
+
+    nimcd (located in /bin, but soft linked after install to ~/bin) can help you get
+    to a particular nimrod run directory quickly. If you follow the file structure 
+    convention of having a results directory inside the nimrod build directory of
+    a particular version, then this should be quite useful. 
+        - during setup you had to specify a nimrod version to use, this is the
+            top level that nimcd works with
+        - to change this nimrod version to another that is located elsewhere on
+            this system, navigate to that folder and run nimupdate
+    
+    try nimcd with no options to see a list of all your run directors, then
+    type in the number cooresponding to the one you wish to go to. That's it!
+
+2) using xd to avoid many annoyances of xdraw
+    
+    nimrod uses xdraw to plot information quickly, but not always very easily. 
+    xd acts as a wrapper for xdraw so you don't have to keep track of config
+    files. For any .bin file in your nimrod run directory you can try xd xxxx.bin
+    or xd xxxx to get a quick xdraw plot. For advanced users, xd --edit option
+    alows you to edit the default config files to change the xdraw display and
+    the -s option will save this new config in the current nimrod run directory.
+    This is handy when, for instance, you have multiple energy.bin files because
+    you have stopped and restarted nimrod several times.
+
+3) nimgrid???
+    
+    this function is very useful for cases where nimrod is being run on a 
+    stitched grid. In your results directory, simply make a grids directory and
+    then include the nimrod.in files for that grid and the stitch instructions.
+    Then nimgrid will help you start a new run on one of the grids you've created.
+
+4) nimen
+
+    this function is nice for getting the energy.bin information into a python-friendly
+    format. It produces a hdf5 file with the magnetic and kinetic energy for all modes.
+    Try nimen --help for more
+
+5) nimh5
+    
+    This is one of the most important functions in nimpy. It is responsible for converting
+    nimrod dump files into python-readable hdf5 files. It should be run in a nimrod run
+    directory on one or many dump files. Try nimh5 --help for more info.
+
+6) nimdata
+    
+    nimdata contains the NimData python class for reading in, manipulating, plotting, etc...
+    data from a nimpy hdf5 file mande by nimh5. After you have the hdf5 file for a dump, you
+    can make a NimData instance with it anywhere. Try opening up an iPython shell and
+    
+    from nimpy.nimdata import NimData
+    a = NimData('dump.xxxxx.h5')
+    help(a) 
+
+    All of the classes and functions used by NimData have full doc_strings, so python's 
+    help() function should get you going. 
+
+7) nimpy.tools module
+
+    For advanced users, NimData might not give you all the flexibility you want. If this
+    is the case, the nimpy.tools module contains a lot of goodies. All of the functions
+    and modules here have doc_strings, so use python's help function to learn more.
+
+    help(nimpy.tools.field_calcs)
+
+
+This README was updated by Ken Flanagan on 8/8/2017
